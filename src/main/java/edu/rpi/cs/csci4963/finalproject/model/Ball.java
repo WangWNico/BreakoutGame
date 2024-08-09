@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 
 public class Ball {
     private double x, y, radius, dx, dy;
+    private boolean spawned = false;
 
     public Ball(double x, double y, double radius, double dx, double dy) {
         this.x = x;
@@ -15,7 +16,12 @@ public class Ball {
     }
 
     public void draw(GraphicsContext gc) {
-        gc.setFill(Color.RED);
+        if(isSpawned()) {
+            gc.setFill(Color.BLUE);
+        }
+        else {
+            gc.setFill(Color.RED);
+        }
         gc.fillOval(x - radius, y - radius, radius * 2, radius * 2);
     }
 
@@ -30,7 +36,8 @@ public class Ball {
         return y > 800;
     }
 
-    public void checkCollision(Paddle paddle, Brick[] bricks) {
+    public boolean checkCollision(Paddle paddle, Brick[] bricks) {
+        boolean brickBroken = false;
         if (x > paddle.getX() && x < paddle.getX() + paddle.getWidth() && y + radius > paddle.getY()) {
             dy = -dy;
         }
@@ -38,7 +45,45 @@ public class Ball {
             if (!brick.isDestroyed() && x > brick.getX() && x < brick.getX() + brick.getWidth() && y - radius < brick.getY() + brick.getHeight()) {
                 dy = -dy;
                 brick.setDestroyed(true);
+                brickBroken = true;
             }
         }
+        return brickBroken;
+    }
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public double getRadius() {
+        return radius;
+    }
+
+    public double getDy() {
+        return dy;
+    }
+
+    public double getDx() {
+        return dx;
+    }
+
+    public void setDx(double dx) {
+        this.dx = dx;
+    }
+
+    public void setDy(double dy) {
+        this.dy = dy;
+    }
+
+    public void setSpawned(boolean spawned) {
+        this.spawned = spawned;
+    }
+
+    public boolean isSpawned() {
+        return spawned;
     }
 }

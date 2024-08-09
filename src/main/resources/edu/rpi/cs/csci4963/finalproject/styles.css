@@ -1,0 +1,50 @@
+/* Style for the root pane */
+#rootPane {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+/* Style for the game canvas */
+#gameCanvas {
+    -fx-background-color: lightgray;
+}
+
+/* Style for the remaining balls text */
+#remainingBallsText {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: darkred;
+}
+
+/* Style for the start menu VBox */
+.vbox {
+    -fx-alignment: center;
+    -fx-spacing: 20;
+    -fx-padding: 20;
+    -fx-background-color: lightblue;
+}
+
+/* Style for the start menu text */
+.text {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-fill: Black;
+}
+
+/* Style for the start menu button */
+.button {
+    -fx-padding: 10 20;
+    -fx-background-color: darkblue;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+ToolBar {
+    -fx-background-color: #f0f0f0;
+}
+
+Button {
+    -fx-font-size: 14px;
+    -fx-padding: 10px;
+}

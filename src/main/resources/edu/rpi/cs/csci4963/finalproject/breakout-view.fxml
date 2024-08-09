@@ -6,15 +6,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane" onKeyPressed="#handleKeyPressed">
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane" onKeyPressed="#handleKeyPressed" stylesheets="@styles.css">
+    <top>
+        <VBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 10;">
+            <Text fx:id="remainingBallsText" text="Remaining Balls: 3" />
+            <Text text="Use LEFT and RIGHT arrow keys to move left and right." />
+            <Button text="Toggle Pause" onAction="#handleTogglePause"/>
+        </VBox>
+    </top>
     <center>
         <StackPane>
             <Canvas fx:id="gameCanvas" width="1000" height="800"/>
         </StackPane>
     </center>
-    <top>
-        <VBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 10;">
-            <Text fx:id="remainingBallsText" text="Remaining Balls: 3" />
-        </VBox>
-    </top>
 </BorderPane>
