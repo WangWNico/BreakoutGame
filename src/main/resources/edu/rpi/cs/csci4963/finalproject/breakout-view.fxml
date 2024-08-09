@@ -8,17 +8,22 @@
 
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.control.Button?>
+<!-- breakout-view.fxml -->
+<?import javafx.scene.layout.HBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane" onKeyPressed="#handleKeyPressed" stylesheets="@styles.css">
-    <top>
-        <VBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 10;">
-            <Text fx:id="remainingBallsText" text="Remaining Balls: 3" />
-            <Text text="Use LEFT and RIGHT arrow keys to move left and right." />
-            <Button text="Toggle Pause" onAction="#handleTogglePause"/>
-        </VBox>
-    </top>
     <center>
-        <StackPane>
-            <Canvas fx:id="gameCanvas" width="1000" height="800"/>
+        <StackPane fx:id="gameStackPane" styleClass="stack-pane" maxWidth="1000" maxHeight="800">
+            <Canvas fx:id="gameCanvas" width="1000" height="800" />
         </StackPane>
     </center>
+    <top>
+        <VBox fx:id="infoVBox" spacing="10" style="-fx-padding: 10;">
+            <Text fx:id="remainingBallsText" text="Remaining Balls: 3" />
+            <Text text="Use LEFT and RIGHT arrow keys to move left and right." />
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Toggle Pause" onAction="#handleTogglePause"/>
+                <Button text="Restart" onAction="#handleRestart"/>
+            </HBox>
+        </VBox>
+    </top>
 </BorderPane>

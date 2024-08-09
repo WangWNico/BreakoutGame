@@ -1,5 +1,6 @@
 /* Style for the root pane */
 #rootPane {
+    -fx-background-color: lightblue;
     -fx-border-color: black;
     -fx-border-width: 2;
     -fx-border-style: solid;
@@ -8,6 +9,16 @@
 /* Style for the game canvas */
 #gameCanvas {
     -fx-background-color: lightgray;
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
+#infoVBox {
+    -fx-background-color: lightgray;
+    -fx-border-color: black;
+    -fx-border-width: 1;
+    -fx-border-style: solid;
 }
 
 /* Style for the remaining balls text */
@@ -25,6 +36,12 @@
     -fx-background-color: lightblue;
 }
 
+.stack-pane {
+    -fx-border-color: black;
+    -fx-border-width: 2;
+    -fx-border-style: solid;
+}
+
 /* Style for the start menu text */
 .text {
     -fx-font-size: 24px;
@@ -40,11 +57,3 @@
     -fx-background-radius: 5;
 }
 
-ToolBar {
-    -fx-background-color: #f0f0f0;
-}
-
-Button {
-    -fx-font-size: 14px;
-    -fx-padding: 10px;
-}

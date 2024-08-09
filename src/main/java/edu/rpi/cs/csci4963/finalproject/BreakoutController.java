@@ -148,6 +148,20 @@ public class BreakoutController {
         togglePause();
     }
 
+    @FXML
+    private void handleRestart() {
+        isGameOver = false;
+        isPaused = false;
+        remainingBalls = 3;
+        remainingBallsText.setText("Remaining Balls: " + remainingBalls);
+        resetBall();
+        for (Brick brick : bricks) {
+            brick.setDestroyed(false);
+            brick.setExtraBallsSpawned(false);
+        }
+        rootPane.requestFocus();
+    }
+
     private void togglePause() {
         isPaused = !isPaused;
     }
