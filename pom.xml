@@ -12,7 +12,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <junit.version>5.10.0</junit.version>
-        <exec.mainClass>edu.rpi.cs.csci4963.finalproject.HelloApplication</exec.mainClass>
+        <exec.mainClass>edu.rpi.cs.csci4963.finalproject.BreakoutApplication</exec.mainClass>
     </properties>
 
     <dependencies>
@@ -62,7 +62,7 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>
-                                edu.rpi.cs.csci4963.java.finalproject/edu.rpi.cs.csci4963.finalproject.HelloApplication
+                                edu.rpi.cs.csci4963.java.finalproject/edu.rpi.cs.csci4963.finalproject.BreakoutApplication
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
