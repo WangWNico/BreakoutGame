@@ -27,7 +27,7 @@ public class Ball {
     }
 
     public boolean isOutOfBounds() {
-        return y > 600; // Assuming the bottom of the frame is at y = 600
+        return y > 800;
     }
 
     public void checkCollision(Paddle paddle, Brick[] bricks) {

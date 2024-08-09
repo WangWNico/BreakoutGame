@@ -2,12 +2,15 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane">
+<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane" onKeyPressed="#handleKeyPressed">
     <center>
-        <Canvas fx:id="gameCanvas" />
+        <StackPane>
+            <Canvas fx:id="gameCanvas" width="1000" height="800"/>
+        </StackPane>
     </center>
     <top>
         <VBox alignment="TOP_RIGHT" spacing="10" style="-fx-padding: 10;">

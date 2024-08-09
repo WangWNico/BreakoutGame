@@ -9,7 +9,7 @@ public class BreakoutApplication extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(BreakoutApplication.class.getResource("start-menu.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 1200, 800);
         stage.setTitle("Breakout Game");
         stage.setScene(scene);
         stage.show();

@@ -32,20 +32,34 @@ public class BreakoutController {
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
-        paddle = new Paddle(350, 550, 100, 10);
-        ball = new Ball(400, 300, 10, 2, 2);
+        paddle = new Paddle(450, 750, 100, 10);
+        ball = new Ball(500, 400, 10, 2, 2);
         bricks = new Brick[30];
         for (int i = 0; i < 30; i++) {
-            bricks[i] = new Brick((i % 10) * 80, (i / 10) * 30, 80, 30);
+            bricks[i] = new Brick((i % 10) * 100, (i / 10) * 30, 100, 30);
         }
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-        // Adjust canvas size to match the BorderPane
         rootPane.widthProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setWidth(newVal.doubleValue()));
         rootPane.heightProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setHeight(newVal.doubleValue()));
+
+        // Ensure rootPane is focusable and request focus
+        rootPane.setFocusTraversable(true);
+        rootPane.requestFocus();
+        System.out.println("rootPane is focusable: " + rootPane.isFocusTraversable());
+        System.out.println("rootPane has focus: " + rootPane.isFocused());
+
+        // Add a key event listener to rootPane
+        rootPane.setOnKeyPressed(this::handleKeyPressed);
+        System.out.println("Key event listener added to rootPane");
+
+        // Add focus listener to rootPane
+        rootPane.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            System.out.println("rootPane focus changed: " + newVal);
+        });
     }
 
     private void run() {
@@ -75,20 +89,21 @@ public class BreakoutController {
     }
 
     private void resetBall() {
-        ball = new Ball(400, 300, 10, 2, 2);
+        ball = new Ball(500, 400, 10, 2, 2); // Adjusted reset position
     }
 
     private void gameOver() {
         isGameOver = true; // Set the game over flag
         gc.setFill(Color.BLACK);
         gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 36)); // Set font to bold and size 36
-        gc.fillText("Game Over", 350, 300);
+        gc.fillText("Game Over", 450, 400); // Adjusted game over text position
     }
 
     @FXML
     public void handleKeyPressed(KeyEvent event) {
+        System.out.println("Key pressed: " + event.getCode());
         if (isGameOver) {
-            return; // Ignore key presses if the game is over
+            return;
         }
         switch (event.getCode()) {
             case LEFT -> paddle.moveLeft();
