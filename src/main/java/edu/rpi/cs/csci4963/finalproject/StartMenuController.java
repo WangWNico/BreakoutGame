@@ -12,7 +12,7 @@ public class StartMenuController {
         try {
             Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(BreakoutApplication.class.getResource("breakout-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 3000, 3000);
+            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
             stage.setScene(scene);
             stage.show();
             scene.getRoot().requestFocus();
