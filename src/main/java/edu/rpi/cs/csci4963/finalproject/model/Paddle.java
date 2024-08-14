@@ -19,11 +19,11 @@ public class Paddle {
     }
 
     public void moveLeft() {
-        if (x > 0) x -= 20;
+        if (x > 0) x -= 35;
     }
 
     public void moveRight() {
-        if (x + width < 800) x += 20;
+        if (x + width < 800) x += 35;
     }
 
     public double getX() { return x; }
