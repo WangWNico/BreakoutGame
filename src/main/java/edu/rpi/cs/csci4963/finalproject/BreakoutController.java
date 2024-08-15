@@ -32,7 +32,6 @@ public class BreakoutController {
     private GraphicsContext gc;
     private Paddle paddle;
     private List<Ball> balls;
-    private List<Ball> spawned_balls;
     private Brick[] bricks;
     private int remainingBalls = 3;
     private boolean isGameOver = false;
@@ -42,6 +41,7 @@ public class BreakoutController {
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
+
         paddle = new Paddle(450, 700, 200, 40);
         balls = new ArrayList<>();
         balls.add(new Ball(500, 400, 10, 5, 5));
@@ -51,6 +51,7 @@ public class BreakoutController {
         double brickHeight = 40;
         int bricksPerRow = (int) (gameWidth / brickWidth);
         int numberOfRows = 5;
+
         bricks = new Brick[bricksPerRow * numberOfRows];
         for (int i = 0; i < bricks.length; i++) {
             double x = (i % bricksPerRow) * brickWidth;
@@ -77,7 +78,6 @@ public class BreakoutController {
         }
         Image backgroundImage = new Image("file:src/main/resources/edu/rpi/cs/csci4963/finalproject/background.jpg");
         gc.drawImage(backgroundImage, 0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
-//        gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         paddle.draw(gc);
         for (Ball ball : balls) {
             ball.draw(gc);

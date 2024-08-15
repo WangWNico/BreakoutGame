@@ -14,7 +14,7 @@
     <center>
         <HBox>
             <StackPane fx:id="gameStackPane" styleClass="stack-pane" maxWidth="1000" maxHeight="800">
-                <Canvas fx:id="gameCanvas" width="1000" height="800" />
+                <Canvas fx:id="gameCanvas" width="1000" height="800" style="-fx-border-black" />
             </StackPane>
         </HBox>
     </center>
