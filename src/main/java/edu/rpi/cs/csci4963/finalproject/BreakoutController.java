@@ -37,6 +37,7 @@ public class BreakoutController {
     private boolean isGameOver = false;
     private Random random = new Random();
     private boolean isPaused = false;
+    private double  gameWidth;
 
     @FXML
     public void initialize() {
@@ -46,7 +47,7 @@ public class BreakoutController {
         balls = new ArrayList<>();
         balls.add(new Ball(500, 400, 10, 5, 5));
 
-        double gameWidth = gameCanvas.getWidth();
+        gameWidth = gameCanvas.getWidth();
         double brickWidth = 100;
         double brickHeight = 40;
         int bricksPerRow = (int) (gameWidth / brickWidth);
@@ -63,9 +64,6 @@ public class BreakoutController {
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-
-        rootPane.widthProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setWidth(newVal.doubleValue()));
-        rootPane.heightProperty().addListener((obs, oldVal, newVal) -> gameCanvas.setHeight(newVal.doubleValue()));
 
         rootPane.setFocusTraversable(true);
         rootPane.requestFocus();
