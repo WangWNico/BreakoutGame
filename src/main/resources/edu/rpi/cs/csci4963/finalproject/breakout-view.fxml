@@ -12,9 +12,11 @@
 <?import javafx.scene.layout.HBox?>
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane" onKeyPressed="#handleKeyPressed" stylesheets="@styles.css">
     <center>
-        <StackPane fx:id="gameStackPane" styleClass="stack-pane" maxWidth="1000" maxHeight="800">
-            <Canvas fx:id="gameCanvas" width="1000" height="800" />
-        </StackPane>
+        <HBox>
+            <StackPane fx:id="gameStackPane" styleClass="stack-pane" maxWidth="1000" maxHeight="800">
+                <Canvas fx:id="gameCanvas" width="1000" height="800" />
+            </StackPane>
+        </HBox>
     </center>
     <top>
         <VBox fx:id="infoVBox" spacing="10" style="-fx-padding: 10;">

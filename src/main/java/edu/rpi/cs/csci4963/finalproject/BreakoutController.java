@@ -9,12 +9,14 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.paint.Color;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -49,12 +51,12 @@ public class BreakoutController {
         double brickHeight = 40;
         int bricksPerRow = (int) (gameWidth / brickWidth);
         int numberOfRows = 5;
-
         bricks = new Brick[bricksPerRow * numberOfRows];
         for (int i = 0; i < bricks.length; i++) {
             double x = (i % bricksPerRow) * brickWidth;
             double y = (i / bricksPerRow) * brickHeight;
-            bricks[i] = new Brick(x, y, brickWidth, brickHeight);
+            String brick = "file:src/main/resources/edu/rpi/cs/csci4963/finalproject/brick.jpg";
+            bricks[i] = new Brick(x, y, brickWidth, brickHeight, brick);
         }
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> run()));
@@ -73,8 +75,9 @@ public class BreakoutController {
         if (isGameOver || isPaused) {
             return;
         }
-
-        gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+        Image backgroundImage = new Image("file:src/main/resources/edu/rpi/cs/csci4963/finalproject/background.jpg");
+        gc.drawImage(backgroundImage, 0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
+//        gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         paddle.draw(gc);
         for (Ball ball : balls) {
             ball.draw(gc);
@@ -90,9 +93,10 @@ public class BreakoutController {
                 for (Brick brick : bricks) {
                     if (brick.isDestroyed() && !brick.isExtraBallsSpawned()) {
                         brick.setExtraBallsSpawned(true);
-                        if (random.nextDouble() < 0.1) {
+                        if (random.nextDouble() < 0.2) {
                             spawnExtraBalls(brick.getX() + brick.getWidth() / 2, brick.getY() + brick.getHeight() / 2);
                         }
+
                     }
                 }
             }
@@ -104,6 +108,8 @@ public class BreakoutController {
                 } else {
                     gameOver();
                 }
+            } else if (ball.isOutOfBounds() && ball.isSpawned()) {
+                balls.remove(ball);
             }
             if (checkAllBricksDestroyed()) {
                 togglePause();
@@ -168,7 +174,7 @@ public class BreakoutController {
 
     private void spawnExtraBalls(double x, double y) {
         for (int i = 0; i < 3; i++) {
-            Ball ball = new Ball(x, y, 10, random.nextDouble() * 4 - 2, random.nextDouble() * 4 - 2);
+            Ball ball = new Ball(x, y, 10, random.nextDouble() * 4, random.nextDouble() * 4);
             ball.setSpawned(true);
             balls.add(ball);
         }
