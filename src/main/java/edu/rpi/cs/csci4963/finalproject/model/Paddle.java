@@ -30,4 +30,7 @@ public class Paddle {
     public double getY() { return y; }
     public double getWidth() { return width; }
     public double getHeight() { return height; }
+    public void increaseWidth() {
+        width += 10;
+    }
 }

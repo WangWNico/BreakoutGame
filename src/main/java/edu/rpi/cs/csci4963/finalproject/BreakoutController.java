@@ -96,7 +96,9 @@ public class BreakoutController {
                         if (random.nextDouble() < 0.2) {
                             spawnExtraBalls(brick.getX() + brick.getWidth() / 2, brick.getY() + brick.getHeight() / 2);
                         }
-
+                        if (random.nextDouble() < 0.1) {
+                            paddle.increaseWidth();
+                        }
                     }
                 }
             }
