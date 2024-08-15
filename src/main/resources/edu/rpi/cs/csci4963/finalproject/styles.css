@@ -6,21 +6,6 @@
     -fx-border-style: solid;
 }
 
-/* Style for the game canvas */
-#gameCanvas {
-    -fx-background-color: lightgray;
-    -fx-border-color: black;
-    -fx-border-width: 2;
-    -fx-border-style: solid;
-}
-
-#infoVBox {
-    -fx-background-color: lightgray;
-    -fx-border-color: black;
-    -fx-border-width: 1;
-    -fx-border-style: solid;
-}
-
 /* Style for the remaining balls text */
 #remainingBallsText {
     -fx-font-size: 18px;

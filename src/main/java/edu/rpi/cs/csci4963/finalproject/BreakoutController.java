@@ -58,7 +58,7 @@ public class BreakoutController {
             double x = (i % bricksPerRow) * brickWidth;
             double y = (i / bricksPerRow) * brickHeight;
             String brick = "file:src/main/resources/edu/rpi/cs/csci4963/finalproject/brick.jpg";
-            bricks[i] = new Brick(x, y, brickWidth, brickHeight, brick);
+            bricks[i] = new Brick(x + 7, y + 10, brickWidth, brickHeight, brick);
         }
 
         Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> run()));
@@ -75,8 +75,6 @@ public class BreakoutController {
             return;
         }
         gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
-        Image backgroundImage = new Image("file:src/main/resources/edu/rpi/cs/csci4963/finalproject/background.jpg");
-        gc.drawImage(backgroundImage, 0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         paddle.draw(gc);
         for (Ball ball : balls) {
             ball.draw(gc);
