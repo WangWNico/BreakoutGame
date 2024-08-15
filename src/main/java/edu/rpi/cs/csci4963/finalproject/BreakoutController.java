@@ -46,7 +46,7 @@ public class BreakoutController {
         balls = new ArrayList<>();
         balls.add(new Ball(500, 400, 10, 5, 5));
 
-        double gameWidth = gameCanvas.getWidth() - 200;
+        double gameWidth = gameCanvas.getWidth();
         double brickWidth = 100;
         double brickHeight = 40;
         int bricksPerRow = (int) (gameWidth / brickWidth);
@@ -76,6 +76,7 @@ public class BreakoutController {
         if (isGameOver || isPaused) {
             return;
         }
+        gc.clearRect(0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         Image backgroundImage = new Image("file:src/main/resources/edu/rpi/cs/csci4963/finalproject/background.jpg");
         gc.drawImage(backgroundImage, 0, 0, gameCanvas.getWidth(), gameCanvas.getHeight());
         paddle.draw(gc);
@@ -114,8 +115,8 @@ public class BreakoutController {
                 balls.remove(ball);
             }
             if (checkAllBricksDestroyed()) {
-                togglePause();
                 gameWon();
+                togglePause();
             }
         }
     }

@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Text?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<?import javafx.scene.control.ToolBar?>
-<?import javafx.scene.control.Button?>
 <!-- breakout-view.fxml -->
-<?import javafx.scene.layout.HBox?>
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController" fx:id="rootPane" onKeyPressed="#handleKeyPressed" stylesheets="@styles.css">
+
+<BorderPane fx:id="rootPane" onKeyPressed="#handleKeyPressed" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController">
     <center>
-        <HBox>
-            <StackPane fx:id="gameStackPane" styleClass="stack-pane" maxWidth="1000" maxHeight="800">
-                <Canvas fx:id="gameCanvas" width="1000" height="800" style="-fx-border-black" />
-            </StackPane>
+        <HBox alignment="CENTER" BorderPane.alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+            <VBox alignment="CENTER" HBox.hgrow="ALWAYS">
+            <HBox alignment="TOP_CENTER" VBox.vgrow="ALWAYS">
+               <children>
+                      <Canvas fx:id="gameCanvas" height="800" style="-fx-border-color: black;" width="800" HBox.hgrow="NEVER" />
+               </children>
+            </HBox>
+            </VBox>
         </HBox>
     </center>
     <top>
-        <VBox fx:id="infoVBox" spacing="10" style="-fx-padding: 10;">
-            <Text fx:id="remainingBallsText" text="Remaining Balls: 3" />
-            <Text text="Use LEFT and RIGHT arrow keys to move left and right." />
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Button text="Toggle Pause" onAction="#handleTogglePause"/>
-                <Button text="Restart" onAction="#handleRestart"/>
-            </HBox>
-        </VBox>
+      <HBox alignment="TOP_CENTER">
+         <children>
+              <VBox fx:id="infoVBox" spacing="10" style="-fx-padding: 10;" HBox.hgrow="ALWAYS">
+                  <Text fx:id="remainingBallsText" text="Remaining Balls: 3" />
+                  <Text text="Use LEFT and RIGHT arrow keys to move left and right." />
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                      <Button onAction="#handleTogglePause" text="Toggle Pause" />
+                      <Button onAction="#handleRestart" text="Restart" />
+                  </HBox>
+              </VBox>
+         </children>
+      </HBox>
     </top>
 </BorderPane>

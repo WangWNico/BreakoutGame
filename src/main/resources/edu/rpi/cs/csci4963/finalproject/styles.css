@@ -30,7 +30,6 @@
 
 /* Style for the start menu VBox */
 .vbox {
-    -fx-alignment: center;
     -fx-spacing: 20;
     -fx-padding: 20;
     -fx-background-color: lightblue;

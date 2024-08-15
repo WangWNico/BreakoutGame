@@ -13,6 +13,9 @@ public class StartMenuController {
     @FXML
     private ImageView backgroundImage;
 
+    /**
+     * Initializes the start menu controller.
+     */
     @FXML
     private void initialize() {
         Image image = new Image(getClass().getResourceAsStream("/edu/rpi/cs/csci4963/finalproject/main_menu.png"));
