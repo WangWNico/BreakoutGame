@@ -4,7 +4,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Text?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.StartMenuController" alignment="CENTER" spacing="20" stylesheets="@styles.css">
-    <Text text="Breakout Game" styleClass="text"/>
-    <Button text="Start Game" onAction="#startGame" styleClass="button"/>
-</VBox>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.StackPane?>
+<StackPane xmlns:fx="http://javafx.com/fxml" fx:controller="edu.rpi.cs.csci4963.finalproject.StartMenuController" stylesheets="@styles.css">
+    <ImageView fx:id="backgroundImage" fitWidth="800" fitHeight="1000" preserveRatio="false"/>
+    <VBox alignment="CENTER" spacing="20">
+        <Text text="Breakout Game" style="-fx-fill: black; -fx-font-size: 48px;" />
+        <Button text="Start Game" onAction="#startGame" styleClass="button"/>
+    </VBox>
+</StackPane>

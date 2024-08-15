@@ -3,10 +3,22 @@ package edu.rpi.cs.csci4963.finalproject;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
 
 public class StartMenuController {
+
+    @FXML
+    private ImageView backgroundImage;
+
+    @FXML
+    private void initialize() {
+        Image image = new Image(getClass().getResourceAsStream("/edu/rpi/cs/csci4963/finalproject/main_menu.png"));
+        backgroundImage.setImage(image);
+    }
+
     @FXML
     private void startGame(ActionEvent event) {
         try {
