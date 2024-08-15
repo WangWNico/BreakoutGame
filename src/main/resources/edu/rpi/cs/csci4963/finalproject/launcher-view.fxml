@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<HBox alignment="CENTER" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.rpi.cs.csci4963.finalproject.GameLauncherController">
+    <VBox alignment="TOP_CENTER">
+        <children>
+            <Label text="Breakout Game">
+                <VBox.margin>
+                    <Insets top="10.0" />
+                </VBox.margin>
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+            <GridPane alignment="CENTER">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints />
+                </rowConstraints>
+                <padding>
+                    <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+                </padding>
+                <children>
+               <TextField fx:id="textFieldHostPort" promptText="Server Port to Listen On" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                    <HBox alignment="CENTER" GridPane.columnSpan="2">
+                        <children>
+                            <Label alignment="CENTER" text="Host Configuration">
+                                <font>
+                                    <Font name="System Bold" size="18.0" />
+                                </font>
+                            </Label>
+                        </children>
+                    </HBox>
+                    <HBox alignment="CENTER" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                        <Button mnemonicParsing="false" onAction="#onButtonHost" text="Host Game" />
+                    </HBox>
+                    <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.columnSpan="2">
+                        <children>
+                            <Label text="Join Configuration">
+                                <font>
+                                    <Font name="System Bold" size="18.0" />
+                                </font>
+                            </Label>
+                        </children>
+                    </HBox>
+                    <Label text="Server IP Address" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    <TextField fx:id="textFieldServerAddress" promptText="Server IP Address" text="localhost" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+                    <Label layoutX="235.0" layoutY="103.0" text="Server Port" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <TextField fx:id="numInPortClient" layoutX="235.0" layoutY="129.0" promptText="Server Port" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+                    <HBox alignment="CENTER" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="6">
+                        <Button mnemonicParsing="false" onAction="#onButtonJoin" text="Join Game" />
+                    </HBox>
+               <Label text="Server Port to Listen On" GridPane.rowIndex="1" />
+                </children>
+            </GridPane>
+        </children>
+    </VBox>
+</HBox>

@@ -146,7 +146,7 @@ public class BreakoutController {
         switch (event.getCode()) {
             case LEFT -> paddle.moveLeft();
             case RIGHT -> paddle.moveRight();
-            case P -> togglePause();
+            case P, SPACE -> togglePause();
         }
     }
 
