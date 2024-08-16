@@ -165,8 +165,6 @@ public class GameLauncherController {
 
         String address = textFieldServerAddress.getText();
         int port = parseTextFieldToNaturalNumber(numInPortClient, "Server Port");
-        if (-1 == port)
-            return;
 
 //        BattleshipEntry entry = BattleshipEntry.get();
         try {

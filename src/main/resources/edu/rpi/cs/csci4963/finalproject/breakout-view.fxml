@@ -9,7 +9,7 @@
 
 <BorderPane fx:id="rootPane" onKeyPressed="#handleKeyPressed" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.rpi.cs.csci4963.finalproject.BreakoutController">
     <center>
-        <HBox alignment="CENTER" BorderPane.alignment="TOP_CENTER" style="-fx-background-image: url('file:src/main/resources/edu/rpi/cs/csci4963/finalproject/background.jpg'); -fx-background-size: cover;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+        <HBox alignment="CENTER" style="-fx-background-image: url('file:src/main/resources/edu/rpi/cs/csci4963/finalproject/background.jpg'); -fx-background-size: cover;" BorderPane.alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
             <Pane style="-fx-border-color: red; -fx-border-width: 5; -fx-border-style: solid;">
                 <Canvas fx:id="gameCanvas" height="800" width="800" />
             </Pane>

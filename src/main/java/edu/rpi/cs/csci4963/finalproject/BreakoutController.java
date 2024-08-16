@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import static edu.rpi.cs.chane5.Utils.alertInfo;
+
 public class BreakoutController {
     @FXML
     private Canvas gameCanvas;
@@ -119,9 +121,7 @@ public class BreakoutController {
 
     private void gameWon() {
         isGameOver = true;
-        gc.setFill(Color.BLACK);
-        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 36));
-        gc.fillText("Game Won", 450, 400);
+        alertInfo("Game Won", "You won the game!");
     }
 
     private void resetBall() {
@@ -131,9 +131,7 @@ public class BreakoutController {
 
     private void gameOver() {
         isGameOver = true;
-        gc.setFill(Color.BLACK);
-        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 36));
-        gc.fillText("Game Over", 450, 400);
+        alertInfo("Game Over", "You lost!");
     }
 
     @FXML
@@ -144,7 +142,7 @@ public class BreakoutController {
         switch (event.getCode()) {
             case LEFT -> paddle.moveLeft();
             case RIGHT -> paddle.moveRight();
-            case P, SPACE -> togglePause();
+            case SPACE -> togglePause();
         }
     }
 

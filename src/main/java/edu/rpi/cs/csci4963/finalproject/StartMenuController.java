@@ -3,6 +3,7 @@ package edu.rpi.cs.csci4963.finalproject;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -30,26 +31,17 @@ public class StartMenuController {
     @FXML
     private void startGame(ActionEvent event) {
         try {
-            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             FXMLLoader fxmlLoader = new FXMLLoader(BreakoutApplication.class.getResource("breakout-view.fxml"));
-            Scene scene = new Scene(fxmlLoader.load(), 800, 1000);
-            stage.setMaximized(true);
+            Parent fxml = fxmlLoader.load();
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(fxml);
+            ((Stage) scene.getWindow()).setMaximized(true);
+            Stage stage = (Stage) scene.getWindow();
             stage.setScene(scene);
+            stage.setMinWidth(850);
+            stage.setMinHeight(1000);
             stage.show();
-            stage.widthProperty().addListener((obs, oldVal, newVal) -> {
-                System.out.println("Width: " + newVal);
-                scene.getRoot().requestFocus();
-                stage.setWidth(newVal.doubleValue());
-                scene.getWindow().sizeToScene();
-            });
-            stage.heightProperty().addListener((obs, oldVal, newVal) -> {
-                System.out.println("Length: " + newVal);
-                scene.getRoot().requestFocus();
-                stage.setWidth(newVal.doubleValue());
-                scene.getWindow().sizeToScene();
-            });
             scene.getRoot().requestFocus();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

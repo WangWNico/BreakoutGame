@@ -5,10 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<StackPane stylesheets="@styles.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/17.0.2-ea" fx:controller="edu.rpi.cs.csci4963.finalproject.StartMenuController">
+<StackPane stylesheets="@styles.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.rpi.cs.csci4963.finalproject.StartMenuController">
     <ImageView fx:id="backgroundImage" fitHeight="1000" fitWidth="800" preserveRatio="false" />
     <VBox alignment="CENTER" spacing="20">
-        <Text style="-fx-fill: black; -fx-font-size: 48px;" text="Breakout Game" />
+        <Text style="-fx-fill: black; -fx-font-size: 48px;" text="Breakout Game">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
         <Button onAction="#startGame" styleClass="button" text="Start Game" />
       <Button mnemonicParsing="false" onAction="#onButtonMultiplayer" text="Multiplayer" />
     </VBox>
