@@ -30,6 +30,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static edu.rpi.cs.chane5.Utils.*;
 
+/**
+ * The BreakoutApplication class is the main entry point for the Breakout game application.
+ * It handles the initialization of the JavaFX application, networking connections, and command processing.
+ */
 public class BreakoutApplication extends Application {
     private static boolean isJavaFxRunning = false;
     // variable to open the start screen on startup or not
@@ -48,11 +52,19 @@ public class BreakoutApplication extends Application {
     private Connection connection;
     private Stage loadingScreen;
 
+    /**
+     * Constructs a new BreakoutApplication instance and sets the static reference.
+     */
     public BreakoutApplication() {
         breakoutApplication = this;
     }
 
-
+    /**
+     * The main entry point for the application.
+     * It processes command-line arguments, registers commands, and starts the necessary threads.
+     *
+     * @param args the command-line arguments
+     */
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
             if ("--debug".equals(args[i]))
@@ -89,17 +101,27 @@ public class BreakoutApplication extends Application {
         threadJavaFX.start();
     }
 
+    /**
+     * Checks if the JavaFX application is running.
+     *
+     * @return true if JavaFX is running, false otherwise
+     */
     public static boolean isJavaFXRunning() {
         return isJavaFxRunning;
     }
 
+    /**
+     * Gets the singleton instance of BreakoutApplication.
+     *
+     * @return the BreakoutApplication instance
+     */
     public static BreakoutApplication get() {
         return breakoutApplication;
     }
 
     /**
-     * Creates a new loading screen with the message and show it on screen. After the loading is done, call {@link Stage#hide()}.
-     * Must run on JavaFX Thread
+     * Creates a new loading screen with the specified message and shows it on the screen.
+     * Must be run on the JavaFX Thread.
      *
      * @param msg the text to display in the window
      * @return a loading screen stage
@@ -132,6 +154,12 @@ public class BreakoutApplication extends Application {
         return stage;
     }
 
+    /**
+     * Starts the JavaFX application and initializes the main stage.
+     *
+     * @param stage the primary stage for this application
+     * @throws Exception if an error occurs during loading
+     */
     @Override
     public void start(Stage stage) throws Exception {
         isJavaFxRunning = true;
@@ -144,7 +172,9 @@ public class BreakoutApplication extends Application {
         ((StartMenuController) fxmlLoader.getController()).setApplicationInstance(this);
     }
 
-
+    /**
+     * Initializes the thread for processing incoming network connections.
+     */
     private void initThreadIncoming() {
         // incoming thread for processing blocking connections
         threadIncoming = new Thread(() -> {
@@ -174,7 +204,11 @@ public class BreakoutApplication extends Application {
         }, "NetworkingIncoming-" + new Date().getTime());
     }
 
-    // alerts of closing connecting then terminates
+    /**
+     * Closes the existing connection and interrupts the connection thread.
+     *
+     * @throws Exception if an error occurs while closing the connection
+     */
     private void closeExisting() throws Exception {
         debug("called");
         if (connection == null)
@@ -188,12 +222,11 @@ public class BreakoutApplication extends Application {
      * Starts a server listening on the specified port.
      *
      * @param port the port to listen on
-     * @throws Exception an I/O error occurred or security error
+     * @throws Exception if an I/O error occurs or a security error
      */
     public void initServer(int port) throws Exception {
         // NOTE NOT RUNNING ON SAME THREAD AS MAIN
         debug("called");
-
 
         if (Thread.currentThread() != threadConnection) {
             connectionQueue.put(() -> {
@@ -223,11 +256,10 @@ public class BreakoutApplication extends Application {
         connection.send(new HandshakeCommand());
     }
 
-
     /**
      * Starts a client at the given address and port.
      *
-     * @param address the IPv4 address of the sever
+     * @param address the IPv4 address of the server
      * @param port    the port number of the server
      * @throws Exception if there is an I/O error
      */
@@ -261,7 +293,7 @@ public class BreakoutApplication extends Application {
     /**
      * Gets the Connection instance.
      *
-     * @return the Connection instance.
+     * @return the Connection instance
      * @see Connection
      */
     public Connection getConnection() {
@@ -269,12 +301,18 @@ public class BreakoutApplication extends Application {
         return connection;
     }
 
+    /**
+     * Stops the JavaFX application and exits the program.
+     */
     @Override
     public void stop() {
         debug("exiting...");
         System.exit(0);
     }
 
+    /**
+     * Closes the loading screen if it is currently displayed.
+     */
     public void closeLoadingScreen() {
         if (loadingScreen != null)
             Platform.runLater(loadingScreen::hide);

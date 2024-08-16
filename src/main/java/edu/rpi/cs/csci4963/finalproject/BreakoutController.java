@@ -21,6 +21,10 @@ import java.util.Random;
 
 import static edu.rpi.cs.chane5.Utils.alertInfo;
 
+/**
+ * The BreakoutController class handles the game logic and user interactions for the Breakout game.
+ * It manages the game state, updates the game objects, and processes user input.
+ */
 public class BreakoutController {
     @FXML
     private Canvas gameCanvas;
@@ -37,11 +41,14 @@ public class BreakoutController {
     private boolean isGameOver = false;
     private Random random = new Random();
     private boolean isPaused = false;
-    private double  gameWidth;
+    private double gameWidth;
 
     private static BreakoutController breakoutController;
     private Timeline timeline;
 
+    /**
+     * Initializes the game by setting up the game objects, starting the game loop, and setting up event handlers.
+     */
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
@@ -75,6 +82,9 @@ public class BreakoutController {
         breakoutController = this;
     }
 
+    /**
+     * The main game loop that updates the game state and renders the game objects.
+     */
     private void run() {
         if (isGameOver || isPaused) {
             return;
@@ -122,16 +132,25 @@ public class BreakoutController {
         }
     }
 
+    /**
+     * Handles the game won scenario by displaying a message and stopping the game.
+     */
     private void gameWon() {
         isGameOver = true;
         alertInfo("Game Won", "You won the game!");
     }
 
+    /**
+     * Resets the ball to its initial position and state.
+     */
     private void resetBall() {
         balls.clear();
         balls.add(new Ball(500, 400, 10, 5, 5));
     }
 
+    /**
+     * Handles the game over scenario by displaying a message and sending a WinGameCommand.
+     */
     private void gameOver() {
         isGameOver = true;
 
@@ -142,6 +161,11 @@ public class BreakoutController {
         alertInfo("Game Over", "You lost!");
     }
 
+    /**
+     * Handles key press events to control the paddle and pause the game.
+     *
+     * @param event the KeyEvent representing the key press
+     */
     @FXML
     public void handleKeyPressed(KeyEvent event) {
         if (isGameOver) {
@@ -154,11 +178,17 @@ public class BreakoutController {
         }
     }
 
+    /**
+     * Handles the pause toggle action.
+     */
     @FXML
     private void handleTogglePause() {
         togglePause();
     }
 
+    /**
+     * Handles the restart action by resetting the game state and objects.
+     */
     @FXML
     private void handleRestart() {
         isGameOver = false;
@@ -173,10 +203,19 @@ public class BreakoutController {
         rootPane.requestFocus();
     }
 
+    /**
+     * Toggles the pause state of the game.
+     */
     private void togglePause() {
         isPaused = !isPaused;
     }
 
+    /**
+     * Spawns extra balls at the specified position.
+     *
+     * @param x the x-coordinate of the spawn position
+     * @param y the y-coordinate of the spawn position
+     */
     private void spawnExtraBalls(double x, double y) {
         for (int i = 0; i < 3; i++) {
             Ball ball = new Ball(x, y, 10, random.nextDouble() * 4, random.nextDouble() * 4);
@@ -185,6 +224,11 @@ public class BreakoutController {
         }
     }
 
+    /**
+     * Checks if all bricks are destroyed.
+     *
+     * @return true if all bricks are destroyed, false otherwise
+     */
     private boolean checkAllBricksDestroyed() {
         for (Brick brick : bricks) {
             if (!brick.isDestroyed()) {
@@ -194,16 +238,27 @@ public class BreakoutController {
         return true;
     }
 
+    /**
+     * Gets the singleton instance of BreakoutController.
+     *
+     * @return the BreakoutController instance
+     */
     public static BreakoutController get() {
         return breakoutController;
     }
 
+    /**
+     * Handles the end game scenario in a multiplayer game.
+     */
     public void multiplayerEndGame() {
         timeline.stop();
         isGameOver = true;
         alertInfo("Game Over", "The opponent broke all their bricks first!");
     }
 
+    /**
+     * Handles the win game scenario in a multiplayer game.
+     */
     public void multiplayerWinGame() {
         timeline.stop();
         isGameOver = true;

@@ -8,11 +8,23 @@ import edu.rpi.cs.csci4963.finalproject.WinGameCommand;
 
 import static edu.rpi.cs.chane5.Utils.debug;
 
+/**
+ * The Protocol class provides static methods to handle different types of commands.
+ * It is a utility class and should not be instantiated.
+ */
 public class Protocol {
+    /**
+     * Private constructor to prevent instantiation of this utility class.
+     */
     private Protocol() {
         // util class, no need to instantiate
     }
 
+    /**
+     * Handles the given command by determining its type and executing the appropriate action.
+     *
+     * @param command the command to handle
+     */
     public static void handle(Command command) {
         debug("called");
         if (command instanceof HandshakeCommand) {

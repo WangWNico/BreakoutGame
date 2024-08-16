@@ -16,6 +16,10 @@ import javafx.stage.StageStyle;
 
 import static edu.rpi.cs.chane5.Utils.errorTrace;
 
+/**
+ * The StartMenuController class handles the interactions and logic for the start menu of the Breakout game.
+ * It manages the start game button, background image, and transitions to other scenes.
+ */
 public class StartMenuController {
     @FXML
     private Button buttonStart;
@@ -26,6 +30,7 @@ public class StartMenuController {
 
     /**
      * Gets the start menu controller.
+     *
      * @return the start menu controller
      */
     public static StartMenuController getStartMenuController() {
@@ -33,7 +38,7 @@ public class StartMenuController {
     }
 
     /**
-     * Initializes the start menu controller.
+     * Initializes the start menu controller by setting the background image and storing the controller instance.
      */
     @FXML
     private void initialize() {
@@ -42,6 +47,11 @@ public class StartMenuController {
         startMenuController = this;
     }
 
+    /**
+     * Starts the game by loading the Breakout game view and setting it as the current scene.
+     *
+     * @param event the ActionEvent triggered by the start button
+     */
     @FXML
     private void startGame(ActionEvent event) {
         try {
@@ -61,10 +71,18 @@ public class StartMenuController {
         }
     }
 
+    /**
+     * Starts the game remotely by firing the start button action.
+     */
     public void remoteStartGame() {
         Platform.runLater(() -> buttonStart.fire());
     }
 
+    /**
+     * Handles the multiplayer button action by loading the multiplayer launcher view and displaying it in a new stage.
+     *
+     * @param event the ActionEvent triggered by the multiplayer button
+     */
     @FXML
     private void onButtonMultiplayer(ActionEvent event) {
         try {
