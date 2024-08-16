@@ -5,10 +5,7 @@ import edu.rpi.cs.chane5.networking.commands.Registry;
 import edu.rpi.cs.chane5.networking.connection.Client;
 import edu.rpi.cs.chane5.networking.connection.Connection;
 import edu.rpi.cs.chane5.networking.connection.Server;
-import edu.rpi.cs.csci4963.finalproject.commands.EndGameCommand;
-import edu.rpi.cs.csci4963.finalproject.commands.HandshakeCommand;
-import edu.rpi.cs.csci4963.finalproject.commands.Protocol;
-import edu.rpi.cs.csci4963.finalproject.commands.StartGameCommand;
+import edu.rpi.cs.csci4963.finalproject.commands.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -77,6 +74,7 @@ public class BreakoutApplication extends Application {
         registry.register(new StartGameCommand());
         registry.register(new EndGameCommand());
         registry.register(new WinGameCommand());
+        registry.register(new RestartGameCommand());
 
         // connection thread
         threadQueue = new Thread(() -> {

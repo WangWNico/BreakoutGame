@@ -2,6 +2,8 @@
 package edu.rpi.cs.csci4963.finalproject;
 
 import edu.rpi.cs.chane5.networking.connection.Connection;
+import edu.rpi.cs.csci4963.finalproject.commands.RestartGameCommand;
+import edu.rpi.cs.csci4963.finalproject.commands.WinGameCommand;
 import edu.rpi.cs.csci4963.finalproject.model.Ball;
 import edu.rpi.cs.csci4963.finalproject.model.Brick;
 import edu.rpi.cs.csci4963.finalproject.model.Paddle;
@@ -18,6 +20,7 @@ import javafx.util.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Executors;
 
 import static edu.rpi.cs.chane5.Utils.alertInfo;
 
@@ -26,13 +29,13 @@ import static edu.rpi.cs.chane5.Utils.alertInfo;
  * It manages the game state, updates the game objects, and processes user input.
  */
 public class BreakoutController {
+    private static BreakoutController breakoutController;
     @FXML
     private Canvas gameCanvas;
     @FXML
     private BorderPane rootPane;
     @FXML
     private Text remainingBallsText;
-
     private GraphicsContext gc;
     private Paddle paddle;
     private List<Ball> balls;
@@ -42,9 +45,16 @@ public class BreakoutController {
     private Random random = new Random();
     private boolean isPaused = false;
     private double gameWidth;
-
-    private static BreakoutController breakoutController;
     private Timeline timeline;
+
+    /**
+     * Gets the singleton instance of BreakoutController.
+     *
+     * @return the BreakoutController instance
+     */
+    public static BreakoutController get() {
+        return breakoutController;
+    }
 
     /**
      * Initializes the game by setting up the game objects, starting the game loop, and setting up event handlers.
@@ -191,6 +201,18 @@ public class BreakoutController {
      */
     @FXML
     private void handleRestart() {
+        Executors.newSingleThreadExecutor().submit(() -> {
+            Connection connection = BreakoutApplication.get().getConnection();
+            if (connection != null)
+                connection.send(new RestartGameCommand());
+        });
+        restart();
+    }
+
+    /**
+     * Restarts the game and screen.
+     */
+    public void restart() {
         isGameOver = false;
         isPaused = false;
         remainingBalls = 3;
@@ -236,15 +258,6 @@ public class BreakoutController {
             }
         }
         return true;
-    }
-
-    /**
-     * Gets the singleton instance of BreakoutController.
-     *
-     * @return the BreakoutController instance
-     */
-    public static BreakoutController get() {
-        return breakoutController;
     }
 
     /**

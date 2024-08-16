@@ -4,7 +4,7 @@ import edu.rpi.cs.chane5.networking.commands.Command;
 import edu.rpi.cs.csci4963.finalproject.BreakoutApplication;
 import edu.rpi.cs.csci4963.finalproject.BreakoutController;
 import edu.rpi.cs.csci4963.finalproject.StartMenuController;
-import edu.rpi.cs.csci4963.finalproject.WinGameCommand;
+import javafx.application.Platform;
 
 import static edu.rpi.cs.chane5.Utils.debug;
 
@@ -38,6 +38,8 @@ public class Protocol {
             BreakoutController.get().multiplayerEndGame();
         } else if (command instanceof WinGameCommand) {
             BreakoutController.get().multiplayerWinGame();
+        } else if (command instanceof RestartGameCommand) {
+            Platform.runLater(() -> BreakoutController.get().restart());
         }
     }
 }

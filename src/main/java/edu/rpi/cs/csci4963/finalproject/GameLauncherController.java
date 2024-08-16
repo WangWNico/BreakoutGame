@@ -105,7 +105,6 @@ public class GameLauncherController {
         } catch (Exception e) {
             e.printStackTrace();
             alertError("Launcher - Server", "There was an error in starting the server on port " + port + "\n" + e.getMessage());
-            return;
         }
     }
 

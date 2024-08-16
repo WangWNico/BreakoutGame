@@ -1,4 +1,4 @@
-package edu.rpi.cs.csci4963.finalproject;
+package edu.rpi.cs.csci4963.finalproject.commands;
 
 import edu.rpi.cs.chane5.networking.commands.Command;
 import edu.rpi.cs.chane5.networking.commands.CommandParser;

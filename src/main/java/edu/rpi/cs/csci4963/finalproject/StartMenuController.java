@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -59,8 +60,8 @@ public class StartMenuController {
             Parent fxml = fxmlLoader.load();
             Scene scene = ((Node) event.getSource()).getScene();
             scene.setRoot(fxml);
-            ((Stage) scene.getWindow()).setMaximized(true);
             Stage stage = (Stage) scene.getWindow();
+            stage.setMaximized(true);
             stage.setScene(scene);
             stage.setMinWidth(850);
             stage.setMinHeight(1000);
