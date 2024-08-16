@@ -12,6 +12,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
@@ -30,6 +31,8 @@ import static edu.rpi.cs.chane5.Utils.alertInfo;
  */
 public class BreakoutController {
     private static BreakoutController breakoutController;
+    @FXML
+    private Button buttonRestart;
     @FXML
     private Canvas gameCanvas;
     @FXML
@@ -206,7 +209,6 @@ public class BreakoutController {
             if (connection != null)
                 connection.send(new RestartGameCommand());
         });
-        restart();
     }
 
     /**
@@ -276,5 +278,12 @@ public class BreakoutController {
         timeline.stop();
         isGameOver = true;
         alertInfo("Game Won", "The opponent lost all their lives first!");
+    }
+
+    /**
+     * Hides the restart button.
+     */
+    public void hideRestartButton() {
+        buttonRestart.visibleProperty().set(false);
     }
 }

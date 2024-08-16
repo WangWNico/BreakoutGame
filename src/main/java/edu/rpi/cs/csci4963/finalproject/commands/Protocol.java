@@ -34,6 +34,9 @@ public class Protocol {
         } else if (command instanceof StartGameCommand) {
             StartMenuController.getStartMenuController().remoteStartGame();
             BreakoutApplication.get().closeLoadingScreen();
+            Platform.runLater(() -> {
+                BreakoutController.get().hideRestartButton();
+            });
         } else if (command instanceof EndGameCommand) {
             BreakoutController.get().multiplayerEndGame();
         } else if (command instanceof WinGameCommand) {

@@ -23,7 +23,7 @@
                     <Text text="Use LEFT and RIGHT arrow keys to move left and right." />
                     <HBox alignment="CENTER_LEFT" spacing="10">
                         <Button onAction="#handleTogglePause" text="Toggle Pause" />
-                        <Button onAction="#handleRestart" text="Restart" />
+                        <Button fx:id="buttonRestart" onAction="#handleRestart" text="Restart" />
                     </HBox>
                 </VBox>
             </children>

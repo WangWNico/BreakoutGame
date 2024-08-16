@@ -28,7 +28,7 @@ help() {
 main() {
 	if [ "build" == "$1" ]; then
 		echo Compiling code...
-		bash mvnw clean install compile
+		bash mvnw clean insta ll compile
 		echo "Compiled into $base/bin/"
 	elif [ "run" == "$1" ]; then
     echo Running program...
