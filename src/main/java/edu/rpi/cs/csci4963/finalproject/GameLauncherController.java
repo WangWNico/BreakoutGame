@@ -1,9 +1,9 @@
 package edu.rpi.cs.csci4963.finalproject;
 
 import edu.rpi.cs.chane5.networking.connection.Server;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -15,9 +15,6 @@ import static edu.rpi.cs.chane5.Utils.*;
  * The controller class for the game launcher.
  */
 public class GameLauncherController {
-    // singleton instance
-    private static GameLauncherController gameLauncherController;
-
     // fields
     private static Scene scene;
     private final Stage stage;
@@ -29,52 +26,22 @@ public class GameLauncherController {
     private TextField textFieldServerAddress;
     @FXML
     private TextField numInPortClient;
+    private BreakoutApplication breakoutApplication;
+    private Runnable cb;
+    private Stage stageToHide;
 
     /**
      * Creates the initial state of the launcher controller.
      */
     public GameLauncherController() {
         debug("constructed");
-        if (gameLauncherController == null)
-            gameLauncherController = this;
-        else
-            throw new RuntimeException("INSTANCE ALREADY EXISTS!");
-
         stage = new Stage();
         stage.setMinWidth(500);
         stage.setMinHeight(300);
         stage.initStyle(StageStyle.DECORATED);
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setResizable(false);
-        stage.setTitle("Battleship Launcher");
-    }
-
-    /**
-     * Gets the singleton instance of this launcher controller.
-     *
-     * @param pScene the scene constructed using an FXMLLoader of the launcher-view.fxml
-     * @return the launcher instance
-     */
-    public static GameLauncherController get(Scene pScene) {
-        debug("called");
-        if (scene == null)
-            scene = pScene;
-        if (gameLauncherController != null)
-            return gameLauncherController;
-
-        errorTrace("Illegal state...");
-        gameLauncherController = new GameLauncherController();
-        return gameLauncherController;
-    }
-
-    /**
-     * Gets the singleton instance of this launcher controller.
-     *
-     * @return the launcher instance
-     */
-    public static GameLauncherController get() {
-        debug("called");
-        return gameLauncherController;
+        stage.setTitle("Breakout Launcher");
     }
 
     /**
@@ -83,10 +50,7 @@ public class GameLauncherController {
      * This method can only be called once per program, otherwise subsequent calls have no effects.
      */
     @FXML
-    public void initialize() {
-        if (gameLauncherController == null)
-            gameLauncherController = this;
-
+    private void initialize() {
         // assign text field formats
         textFieldEnsurePositiveCountingNumber(textFieldHostPort, false);
         textFieldEnsurePositiveCountingNumber(numInPortClient, false);
@@ -100,20 +64,6 @@ public class GameLauncherController {
         numInPortClient.setText(String.valueOf(Server.DEFAULT_PORT));
         textFieldHostPort.setText(String.valueOf(Server.DEFAULT_PORT));
     }
-
-    /**
-     * Shows the Launcher window on the screen.
-     *
-     * @param utilWindow true if set as util window, false to set as normal window
-     */
-    public void show(boolean utilWindow) {
-        debug("called");
-        stage.hide();
-
-        stage.setScene(scene);
-        stage.show();
-    }
-
 
     /**
      * Tries to convert the TextField input into a natural number <code>(0 < n)</code>. Alert the user if there is an invalid input.
@@ -144,40 +94,54 @@ public class GameLauncherController {
 
 
     @FXML
-    private void onButtonHost() {
-        debug("called");
-//        BattleshipEntry entry = BattleshipEntry.get();
+    private void onButtonHost(ActionEvent event) {
+        debug("called: attempting host on port " + textFieldHostPort.getText());
+
+        int port = parseTextFieldToNaturalNumber(textFieldHostPort, "port");
+
         try {
-//            entry.initServer(port);
+            stageToHide.hide();
+            breakoutApplication.initServer(port);
         } catch (Exception e) {
             e.printStackTrace();
-//            alertError("Launcher - Server", "There was an error in starting the server on port " + port + "\n" + e.getMessage());
+            alertError("Launcher - Server", "There was an error in starting the server on port " + port + "\n" + e.getMessage());
             return;
         }
-
-        // hides the launcher screen
-        stage.hide();
     }
 
     @FXML
     private void onButtonJoin() {
-        debug("called");
+        debug("called: joining on " + textFieldServerAddress.getText() + ":" + numInPortClient.getText());
 
-        String address = textFieldServerAddress.getText();
-        int port = parseTextFieldToNaturalNumber(numInPortClient, "Server Port");
 
-//        BattleshipEntry entry = BattleshipEntry.get();
-        try {
-//            entry.initClient(address, port);
-        } catch (Exception e) {
-            e.printStackTrace();
-            alertError("Launcher - Client", "There was an error in connecting to " + address + ":" + port + "\n" + e.getMessage());
+        String server = textFieldServerAddress.getText();
+        int port = parseTextFieldToNaturalNumber(numInPortClient, "port");
+
+        if (server.isEmpty()) {
+            alertError("Launcher - Join", "Server IP Address can't be blank");
             return;
         }
 
-        debug("reached");
-        // todo update game state
-//        entry.getJavaFxApp().show();
-        stage.hide();
+        stageToHide.close();
+
+        try {
+            breakoutApplication.initClient(server, port);
+        } catch (Exception e) {
+            e.printStackTrace();
+            alertError("Launcher - Server", "There was an error in starting the server on port " + port + "\n" + e.getMessage());
+        }
+    }
+
+    /**
+     * Sets the application instance
+     *
+     * @param breakoutApplication the application instance
+     */
+    public void setApplicationInstance(BreakoutApplication breakoutApplication) {
+        this.breakoutApplication = breakoutApplication;
+    }
+
+    public void setStageHide(Stage stage) {
+        this.stageToHide = stage;
     }
 }

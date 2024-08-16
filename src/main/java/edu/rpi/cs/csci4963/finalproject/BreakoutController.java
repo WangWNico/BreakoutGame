@@ -1,6 +1,7 @@
 // BreakoutController.java
 package edu.rpi.cs.csci4963.finalproject;
 
+import edu.rpi.cs.chane5.networking.connection.Connection;
 import edu.rpi.cs.csci4963.finalproject.model.Ball;
 import edu.rpi.cs.csci4963.finalproject.model.Brick;
 import edu.rpi.cs.csci4963.finalproject.model.Paddle;
@@ -9,14 +10,11 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-import javafx.scene.paint.Color;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -41,6 +39,9 @@ public class BreakoutController {
     private boolean isPaused = false;
     private double  gameWidth;
 
+    private static BreakoutController breakoutController;
+    private Timeline timeline;
+
     @FXML
     public void initialize() {
         gc = gameCanvas.getGraphicsContext2D();
@@ -63,13 +64,15 @@ public class BreakoutController {
             bricks[i] = new Brick(x + 7, y + 10, brickWidth, brickHeight, brick);
         }
 
-        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> run()));
+        timeline = new Timeline(new KeyFrame(Duration.millis(16), e -> run()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
         rootPane.setFocusTraversable(true);
         rootPane.requestFocus();
         rootPane.setOnKeyPressed(this::handleKeyPressed);
+
+        breakoutController = this;
     }
 
     private void run() {
@@ -131,6 +134,11 @@ public class BreakoutController {
 
     private void gameOver() {
         isGameOver = true;
+
+        Connection connection = BreakoutApplication.get().getConnection();
+        if (connection != null)
+            connection.send(new WinGameCommand());
+
         alertInfo("Game Over", "You lost!");
     }
 
@@ -184,5 +192,21 @@ public class BreakoutController {
             }
         }
         return true;
+    }
+
+    public static BreakoutController get() {
+        return breakoutController;
+    }
+
+    public void multiplayerEndGame() {
+        timeline.stop();
+        isGameOver = true;
+        alertInfo("Game Over", "The opponent broke all their bricks first!");
+    }
+
+    public void multiplayerWinGame() {
+        timeline.stop();
+        isGameOver = true;
+        alertInfo("Game Won", "The opponent lost all their lives first!");
     }
 }

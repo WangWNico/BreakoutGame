@@ -1,31 +1,37 @@
 package edu.rpi.cs.csci4963.finalproject;
 
-import edu.rpi.cs.chane5.Utils;
 import edu.rpi.cs.chane5.networking.commands.Command;
+import edu.rpi.cs.chane5.networking.commands.Registry;
 import edu.rpi.cs.chane5.networking.connection.Client;
 import edu.rpi.cs.chane5.networking.connection.Connection;
 import edu.rpi.cs.chane5.networking.connection.Server;
-import edu.rpi.cs.csci4963.finalproject.networking.HandshakeCommand;
-import edu.rpi.cs.csci4963.finalproject.networking.Protocol;
+import edu.rpi.cs.csci4963.finalproject.commands.EndGameCommand;
+import edu.rpi.cs.csci4963.finalproject.commands.HandshakeCommand;
+import edu.rpi.cs.csci4963.finalproject.commands.Protocol;
+import edu.rpi.cs.csci4963.finalproject.commands.StartGameCommand;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.util.Date;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static edu.rpi.cs.chane5.Utils.*;
 
 public class BreakoutApplication extends Application {
     private static boolean isJavaFxRunning = false;
-    private Thread threadIncoming;
-    // the socket connection
-    private Connection connection;
-
-
-
     // variable to open the start screen on startup or not
     private static boolean openLauncher = false;
     // queue processing thread
@@ -33,24 +39,97 @@ public class BreakoutApplication extends Application {
     // connection thread, aka main(String[]) thread
     private static Thread threadConnection;
     private static LinkedBlockingQueue<Runnable> connectionQueue = new LinkedBlockingQueue<>();
-    private final int LOSS_THRESHOLD = 25;
     // JavaFX Thread
-    private Thread threadJavaFX;
+    private static Thread threadJavaFX;
+    private static BreakoutApplication breakoutApplication;
+    private final int LOSS_THRESHOLD = 25;
+    private Thread threadIncoming;
+    // the socket connection
+    private Connection connection;
+    private Stage loadingScreen;
 
-
+    public BreakoutApplication() {
+        breakoutApplication = this;
+    }
 
 
     public static void main(String[] args) {
         for (int i = 0; i < args.length; i++) {
             if ("--debug".equals(args[i]))
-                Utils.DEBUG_MODE = true;
+                DEBUG_MODE = true;
         }
 
-        launch();
+        // register commands
+        Registry registry = Registry.get();
+        registry.register(new HandshakeCommand());
+        registry.register(new StartGameCommand());
+        registry.register(new EndGameCommand());
+        registry.register(new WinGameCommand());
+
+        // connection thread
+        threadQueue = new Thread(() -> {
+            try {
+                while (true) {
+                    Runnable runnable = connectionQueue.poll(3, TimeUnit.SECONDS);
+                    if (runnable != null) {
+                        if (threadConnection != null)
+                            threadConnection.interrupt();
+                        threadConnection = new Thread(runnable);
+                        threadConnection.start();
+                    }
+                }
+            } catch (InterruptedException e) {
+                errorTrace("connectionQueue thread was interrupted");
+            }
+        }, "connectionQueue");
+        threadQueue.start();
+
+        // init javafx on separate thread
+        threadJavaFX = new Thread(Application::launch, "JavaFX Main");
+        threadJavaFX.start();
     }
 
     public static boolean isJavaFXRunning() {
         return isJavaFxRunning;
+    }
+
+    public static BreakoutApplication get() {
+        return breakoutApplication;
+    }
+
+    /**
+     * Creates a new loading screen with the message and show it on screen. After the loading is done, call {@link Stage#hide()}.
+     * Must run on JavaFX Thread
+     *
+     * @param msg the text to display in the window
+     * @return a loading screen stage
+     */
+    public Stage startLoadingScreen(String msg) {
+        debug("loading screen");
+
+        Stage stage = new Stage();
+        stage.initModality(Modality.NONE);
+        stage.initStyle(StageStyle.DECORATED);
+        stage.setTitle("Loading...");
+        stage.show();
+
+        Label label = new Label();
+        label.setText(msg);
+        label.setFont(new Font(18));
+        label.textAlignmentProperty().setValue(TextAlignment.CENTER);
+
+        VBox containerVbox = new VBox(10);
+        containerVbox.setAlignment(Pos.CENTER);
+        containerVbox.getChildren().add(label);
+
+        HBox container = new HBox();
+        container.setAlignment(Pos.CENTER);
+        container.getChildren().add(containerVbox);
+
+        Scene scene = new Scene(container, 300, 300);
+        stage.setResizable(false);
+        stage.setScene(scene);
+        return stage;
     }
 
     @Override
@@ -62,9 +141,8 @@ public class BreakoutApplication extends Application {
         stage.setTitle("Breakout Game");
         stage.setScene(scene);
         stage.show();
+        ((StartMenuController) fxmlLoader.getController()).setApplicationInstance(this);
     }
-
-
 
 
     private void initThreadIncoming() {
@@ -79,7 +157,10 @@ public class BreakoutApplication extends Application {
                     if (LOSS_THRESHOLD < loss) {
                         debug("Loss enough packets to assume connection severed!");
                         Platform.runLater(() -> {
-//                            getJavaFxApp().setUpdateMessage("ERROR: Peer lost connection!\nRestart Game");
+                            debug("Multiplayer opponent lost connection! Restart program!");
+                            alertError("Multiplayer", "Multiplayer opponent lost connection!\nRestart program!", (buttonType) -> {
+                                // todo open start screen again
+                            });
                         });
                         break;
                     }
@@ -90,7 +171,6 @@ public class BreakoutApplication extends Application {
             }
             debug("END of #initThreadIncoming() > Thread-NetworkingIncoming");
             // NOTE: is interruptible
-            // todo gracefully handle when connections disconnect AKA alert user
         }, "NetworkingIncoming-" + new Date().getTime());
     }
 
@@ -99,7 +179,6 @@ public class BreakoutApplication extends Application {
         debug("called");
         if (connection == null)
             return;
-        // todo send exit/close command
         connection.close();
         if (threadConnection != null)
             threadConnection.interrupt();
@@ -116,34 +195,34 @@ public class BreakoutApplication extends Application {
         debug("called");
 
 
-//        javaFxApp.setWindowTitle("Battleship - Server Awaiting Connection..");
         if (Thread.currentThread() != threadConnection) {
             connectionQueue.put(() -> {
                 try {
-//                    javaFxApp.setUpdateMessage("Starting server on port " + port);
                     initServer(port);
-                    String msg = "Hosting on localhost:" + port;
-                    debug(msg);
-//                    javaFxApp.setUpdateMessage(msg);
+                    debug("Hosting on localhost:" + port);
                 } catch (Exception e) {
                     errorTrace("starting server on port " + port);
                     alertError("Starting Server", "Error starting the server on port " + port + '\n' + e.getMessage());
                     e.printStackTrace();
-//                    javaFxApp.setUpdateMessage("");
                 }
             });
             return;
         }
 
+        AtomicReference<Stage> stage = new AtomicReference<>();
+        Platform.runLater(() -> loadingScreen = startLoadingScreen("Starting Server...\nWaiting for connection..."));
         closeExisting();
         initThreadIncoming();
         connection = new Server(port);
         connection.connect();
         if (!threadIncoming.isAlive())
             threadIncoming.start();
-//        connection.send(new HandshakeCommand().setState(HandshakeCommand.State.INIT));
-//        javaFxApp.setWindowTitle("Battleship - Server");
+
+        if (stage.get() != null)
+            Platform.runLater(() -> stage.get().hide());
+        connection.send(new HandshakeCommand());
     }
+
 
     /**
      * Starts a client at the given address and port.
@@ -156,8 +235,6 @@ public class BreakoutApplication extends Application {
         // NOTE NOT RUNNING ON SAME THREAD AS MAIN
         debug("called");
 
-//        javaFxApp.setWindowTitle("Battleship - Client Awaiting Connection...");
-//        javaFxApp.setUpdateMessage("Awaiting server to ready...");
         if (Thread.currentThread() != threadConnection) {
             connectionQueue.put(() -> {
                 try {
@@ -166,7 +243,6 @@ public class BreakoutApplication extends Application {
                     errorTrace("starting server on port " + port);
                     alertError("Starting Client", "There was an error in connecting to " + address + ":" + port + "\n" + e.getMessage());
                     e.printStackTrace();
-//                    javaFxApp.setUpdateMessage("");
                 }
             });
             return;
@@ -178,6 +254,7 @@ public class BreakoutApplication extends Application {
         connection.connect();
         if (!threadIncoming.isAlive())
             threadIncoming.start();
+
         connection.send(new HandshakeCommand());
     }
 
@@ -190,5 +267,16 @@ public class BreakoutApplication extends Application {
     public Connection getConnection() {
         debug("called");
         return connection;
+    }
+
+    @Override
+    public void stop() {
+        debug("exiting...");
+        System.exit(0);
+    }
+
+    public void closeLoadingScreen() {
+        if (loadingScreen != null)
+            Platform.runLater(loadingScreen::hide);
     }
 }
