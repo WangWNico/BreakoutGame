@@ -2,7 +2,6 @@
 package edu.rpi.cs.csci4963.finalproject;
 
 import edu.rpi.cs.chane5.networking.connection.Connection;
-import edu.rpi.cs.csci4963.finalproject.commands.RestartGameCommand;
 import edu.rpi.cs.csci4963.finalproject.commands.WinGameCommand;
 import edu.rpi.cs.csci4963.finalproject.model.Ball;
 import edu.rpi.cs.csci4963.finalproject.model.Brick;
@@ -204,17 +203,6 @@ public class BreakoutController {
      */
     @FXML
     private void handleRestart() {
-        Executors.newSingleThreadExecutor().submit(() -> {
-            Connection connection = BreakoutApplication.get().getConnection();
-            if (connection != null)
-                connection.send(new RestartGameCommand());
-        });
-    }
-
-    /**
-     * Restarts the game and screen.
-     */
-    public void restart() {
         isGameOver = false;
         isPaused = false;
         remainingBalls = 3;

@@ -74,7 +74,6 @@ public class BreakoutApplication extends Application {
         registry.register(new StartGameCommand());
         registry.register(new EndGameCommand());
         registry.register(new WinGameCommand());
-        registry.register(new RestartGameCommand());
 
         // connection thread
         threadQueue = new Thread(() -> {
